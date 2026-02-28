@@ -37,7 +37,9 @@ export default function Vault() {
     (ownerForVaults ?? "0x0000000000000000000000000000000000000000") as `0x${string}`
   )
 
-  const isOwner = ownerForVaults?.toLowerCase() === address?.toLowerCase()
+  const ownerStr =
+    typeof ownerForVaults === "string" ? ownerForVaults : ""
+  const isOwner = ownerStr.toLowerCase() === (address?.toLowerCase() ?? "")
 
   const displayTvl = vault?.tvl ?? ""
   const displayDebt =

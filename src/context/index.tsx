@@ -30,8 +30,6 @@ createWeb3Modal({
     "--w3m-border-radius-master": "6px",
     "--w3m-font-family": "DM Sans, sans-serif",
     "--w3m-font-size-master": "8px",
-    "--w3m-background-color": "#18181b",
-    "--w3m-background-color-rgb": "24, 24, 27",
   },
   themeMode: "dark",
 })
