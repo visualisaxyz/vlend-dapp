@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 220 13% 18%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 13% 18%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 13% 18%;
+
+    --primary: 160 84% 39%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 13% 96%;
+    --secondary-foreground: 220 13% 18%;
+
+    --muted: 220 13% 96%;
+    --muted-foreground: 220 13% 45%;
+
+    --accent: 160 40% 94%;
+    --accent-foreground: 160 84% 25%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 160 84% 39%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 140 10% 4%;
+    --foreground: 0 0% 98%;
+
+    --card: 140 10% 6%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 140 10% 6%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 160 84% 39%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 140 10% 14%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 140 10% 14%;
+    --muted-foreground: 0 0% 63%;
+
+    --accent: 160 30% 12%;
+    --accent-foreground: 160 84% 50%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 13% 18%;
+    --input: 220 13% 18%;
+    --ring: 160 84% 39%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+  }
+}
+
+.main-content {
+  background-color: hsl(var(--background));
+}
+
+* {
+  scrollbar-color: hsl(var(--primary)) transparent;
+}
+
+button[data-state="active"] img {
+  filter: invert(100%);
+}
+
+.web3modal-modal {
+  color: hsl(var(--foreground));
+}
+
+.web3modal-button {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.click-through {
+  pointer-events: none;
+}
+
+@keyframes fIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
