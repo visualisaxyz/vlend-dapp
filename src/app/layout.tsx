@@ -6,6 +6,7 @@ import { DM_Mono, DM_Sans } from "next/font/google"
 import { ContextProvider } from "@/context"
 
 import { siteConfig } from "@/config/site"
+import { env } from "@/env.mjs"
 import { cn } from "@/lib/utils"
 import Header from "@/components/layout/header"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -32,7 +33,7 @@ export const dynamic = "force-dynamic"
 export const revalidate = 0
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url.base),
+  metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
   title: {
     default: siteConfig.name,
     template: `%s | ${siteConfig.name}`,

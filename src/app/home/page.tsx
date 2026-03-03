@@ -12,6 +12,7 @@ import useRedeemableVaultsMerged, {
 import useStatistics from "@/hooks/use-statistics"
 import useStabilityPool from "@/hooks/use-stability-pool"
 import useStabilityPoolRealTime from "@/hooks/use-stability-pool-realtime"
+import useVlendStaking from "@/hooks/use-vlend-staking"
 import useVaultsList, { type VaultList } from "@/hooks/use-vaults-list"
 import { shortAddress } from "@/lib/utils"
 
@@ -26,6 +27,7 @@ export default function Home() {
   const { statistics, isLoading: statisticsLoading } = useStatistics()
   const { stabilityPoolOverview } = useStabilityPool()
   const { stake, rewards, isLoading: spRealtimeLoading } = useStabilityPoolRealTime()
+  const { totalVlendStaked } = useVlendStaking()
   const { collaterals } = useCollaterals()
   const { prices } = usePrices()
   const { redeemableVaults, isLoading: redeemableLoading } =
@@ -84,7 +86,10 @@ export default function Home() {
     allVaults.length > 0
       ? allVaults.length
       : (statistics?.totalVaultsCreated ?? 0)
-  const vlendStaked = parseFloat(statistics?.VLENDinStaking ?? "0")
+  // Prefer on-chain VLEND staking total (same source as stability pool) over API
+  const vlendStaked = totalVlendStaked
+    ? parseFloat(formatEther(totalVlendStaked))
+    : parseFloat(statistics?.VLENDinStaking ?? "0")
   const vlendPrice = Number(prices?.VLEND ?? 0)
 
   const statCards = [

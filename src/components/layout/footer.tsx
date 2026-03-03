@@ -23,10 +23,10 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="text-sm text-muted-foreground hover:text-foreground"
           >
-            App
+            Website
           </Link>
           <Link
-            href="https://docs.megaeth.com"
+            href="https://vlend.gitbook.io/vlend-docs/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-foreground"
@@ -41,12 +41,14 @@ export default function Footer() {
           >
             <FaXTwitter className="h-5 w-5" />
           </Link>
-          <span
-            className="cursor-default text-muted-foreground"
-            title="Telegram (link coming soon)"
+          <Link
+            href="https://t.me/+DJEsQfpkhPgyZGY0"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground"
           >
             <SiTelegram className="h-5 w-5" />
-          </span>
+          </Link>
         </div>
       </div>
     </footer>
