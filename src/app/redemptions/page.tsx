@@ -389,7 +389,14 @@ export default function Redemptions() {
                           v.isOwn ? "text-green-500" : "text-zinc-500"
                         }`}
                       >
-                        {v.isOwn ? "You" : v.owner}
+                        <span
+                          className="inline-block max-w-[150px] truncate"
+                          title={v.isOwn ? "Your wallet" : v.owner}
+                        >
+                          {v.isOwn
+                            ? "You"
+                            : `${v.owner.slice(0, 6)}…${v.owner.slice(-4)}`}
+                        </span>
                       </div>
                       <div
                         key={`${v.address}-3`}
