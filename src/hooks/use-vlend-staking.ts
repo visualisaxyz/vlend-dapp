@@ -1,8 +1,7 @@
 "use client"
 
 import { formatEther } from "viem"
-import { useAccount } from "wagmi"
-import { useReadContracts } from "wagmi"
+import { useAccount, useReadContract, useReadContracts } from "wagmi"
 
 import { vlendAddresses } from "@/config/blockchain"
 
@@ -46,28 +45,38 @@ export default function useVlendStaking() {
   const { address } = useAccount()
   const chainId = useInternalChainId()
 
-  const results = useReadContracts({
-    contracts: [
-      {
-        abi: VLEND_STAKING_ABI,
-        address: vlendAddresses.vlendStaking,
-        functionName: "balanceOf",
-        args: [address ?? "0x"],
-        chainId,
-      },
-      {
-        abi: VLEND_STAKING_ABI,
-        address: vlendAddresses.vlendStaking,
-        functionName: "totalSupply",
-        chainId,
-      },
-      {
-        abi: VLEND_STAKING_ABI,
-        address: vlendAddresses.vlendStaking,
-        functionName: "rewardTokens",
-        chainId,
-      },
-    ],
+  // Global total staked (contract totalSupply) – always fetched when chainId is known
+  const totalSupplyResult = useReadContract({
+    abi: VLEND_STAKING_ABI,
+    address: vlendAddresses.vlendStaking,
+    functionName: "totalSupply",
+    chainId,
+    query: {
+      refetchInterval: 5000,
+      refetchIntervalInBackground: true,
+      enabled: !!chainId,
+    },
+  })
+
+  // Wallet-specific data (balance + reward tokens) – only when a wallet is connected
+  const walletResults = useReadContracts({
+    contracts: address
+      ? [
+          {
+            abi: VLEND_STAKING_ABI,
+            address: vlendAddresses.vlendStaking,
+            functionName: "balanceOf",
+            args: [address],
+            chainId,
+          },
+          {
+            abi: VLEND_STAKING_ABI,
+            address: vlendAddresses.vlendStaking,
+            functionName: "rewardTokens",
+            chainId,
+          },
+        ]
+      : [],
     query: {
       refetchInterval: 5000,
       refetchIntervalInBackground: true,
@@ -75,9 +84,10 @@ export default function useVlendStaking() {
     },
   })
 
-  const vlendStaked = results.data?.[0]?.result as bigint | undefined
-  const totalVlendStaked = results.data?.[1]?.result as bigint | undefined
-  const rewardTokens = results.data?.[2]?.result as `0x${string}`[] | undefined
+  const vlendStaked = walletResults.data?.[0]?.result as bigint | undefined
+  const rewardTokens = walletResults.data?.[1]
+    ?.result as `0x${string}`[] | undefined
+  const totalVlendStaked = totalSupplyResult.data as bigint | undefined
 
   const earnedContracts =
     rewardTokens && address
@@ -111,7 +121,8 @@ export default function useVlendStaking() {
     rewardsHuman: formatEther(rewardsBigInt),
     rewardTokens,
     isLoading:
-      results.isLoading ||
+      totalSupplyResult.isLoading ||
+      walletResults.isLoading ||
       (earnedContracts.length > 0 && earnedResults.isLoading),
   }
 }
